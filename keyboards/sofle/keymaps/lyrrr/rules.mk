@@ -1,4 +1,3 @@
-TRI_LAYER_ENABLE = yes
 # Bootloader selection
 BOOTLOADER = caterina
 MOUSEKEY_ENABLE = yes
@@ -8,3 +7,5 @@ RGBLIGHT_ENABLE = yes
 ENCODER_ENABLE = yes
 LTO_ENABLE = yes
 OLED_ENABLE = yes
+RGBLIGHT_LED_COUNT = 14
+RGBLED_SPLIT = { 7, 7 }

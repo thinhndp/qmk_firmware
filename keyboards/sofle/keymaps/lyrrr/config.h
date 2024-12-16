@@ -32,31 +32,31 @@
     // #define RGBLIGHT_EFFECT_KNIGHT
     #define RGBLIGHT_EFFECT_CHRISTMAS
     #define RGBLIGHT_EFFECT_STATIC_GRADIENT
-    #define RGBLIGHT_EFFECT_RGB_TEST
-    #define RGBLIGHT_EFFECT_ALTERNATING
+    // #define RGBLIGHT_EFFECT_RGB_TEST
+    // #define RGBLIGHT_EFFECT_ALTERNATING
     #define RGBLIGHT_EFFECT_TWINKLE
 #endif
 
 /* RGB_MATRIX Configuration */
-#ifdef RGB_MATRIX_ENABLE
-    #undef RGBLIGHT_LED_COUNT
-    #undef RGBLED_SPLIT
-    #define RGB_MATRIX_LED_COUNT 14            // Total number of LEDs
-    #define RGB_MATRIX_KEYPRESSES              // React to keypresses
-    #define RGB_MATRIX_SLEEP                   // Turn off effects on suspend
-    #define RGB_MATRIX_FRAMEBUFFER_EFFECTS     // Framebuffer effects
-    #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 150  // Brightness limit (max 255)
-    #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_GRADIENT_LEFT_RIGHT
-
-    /* Adjustment steps for RGB Matrix */
-    #define RGB_MATRIX_HUE_STEP 8
-    #define RGB_MATRIX_SAT_STEP 8
-    #define RGB_MATRIX_VAL_STEP 8
-    #define RGB_MATRIX_SPD_STEP 10
-
-    /* Optional: Disable unnecessary animations to save firmware space */
-    // #undef ENABLE_RGB_MATRIX_ALPHAS_MODS
-    // #undef ENABLE_RGB_MATRIX_TYPING_HEATMAP
-    // #undef ENABLE_RGB_MATRIX_RAINDROPS
-    // #undef ENABLE_RGB_MATRIX_SOLID_SPLASH
-#endif
+// #ifdef RGB_MATRIX_ENABLE
+//     #undef RGBLIGHT_LED_COUNT
+//     #undef RGBLED_SPLIT
+//     #define RGB_MATRIX_LED_COUNT 14            // Total number of LEDs
+//     #define RGB_MATRIX_KEYPRESSES              // React to keypresses
+//     #define RGB_MATRIX_SLEEP                   // Turn off effects on suspend
+//     #define RGB_MATRIX_FRAMEBUFFER_EFFECTS     // Framebuffer effects
+//     #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 150  // Brightness limit (max 255)
+//     #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_GRADIENT_LEFT_RIGHT
+//
+//     /* Adjustment steps for RGB Matrix */
+//     #define RGB_MATRIX_HUE_STEP 8
+//     #define RGB_MATRIX_SAT_STEP 8
+//     #define RGB_MATRIX_VAL_STEP 8
+//     #define RGB_MATRIX_SPD_STEP 10
+//
+//     /* Optional: Disable unnecessary animations to save firmware space */
+//     // #undef ENABLE_RGB_MATRIX_ALPHAS_MODS
+//     // #undef ENABLE_RGB_MATRIX_TYPING_HEATMAP
+//     // #undef ENABLE_RGB_MATRIX_RAINDROPS
+//     // #undef ENABLE_RGB_MATRIX_SOLID_SPLASH
+// #endif

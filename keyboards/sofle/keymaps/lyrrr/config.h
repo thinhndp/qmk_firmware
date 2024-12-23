@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #pragma once
+/* Mod tap */
+#define TAPPING_TERM 200
+#define HOLD_ON_OTHER_KEY_PRESS
 
 /* Custom Features */
 #define CUSTOM_FONT
@@ -28,17 +31,18 @@
     #define RGBLIGHT_EFFECT_BREATHING
     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
     #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-    // #define RGBLIGHT_EFFECT_SNAKE
-    // #define RGBLIGHT_EFFECT_KNIGHT
+    // #undef RGBLIGHT_EFFECT_SNAKE
+    // #undef RGBLIGHT_EFFECT_KNIGHT
     #define RGBLIGHT_EFFECT_CHRISTMAS
     #define RGBLIGHT_EFFECT_STATIC_GRADIENT
-    // #define RGBLIGHT_EFFECT_RGB_TEST
-    // #define RGBLIGHT_EFFECT_ALTERNATING
+    // #undef RGBLIGHT_EFFECT_RGB_TEST
+    // #undef RGBLIGHT_EFFECT_ALTERNATING
     #define RGBLIGHT_EFFECT_TWINKLE
 #endif
 
 /* RGB_MATRIX Configuration */
-// #ifdef RGB_MATRIX_ENABLE
+#ifdef RGB_MATRIX_ENABLE
+    #undef RGB_MATRIX_ENABLE
 //     #undef RGBLIGHT_LED_COUNT
 //     #undef RGBLED_SPLIT
 //     #define RGB_MATRIX_LED_COUNT 14            // Total number of LEDs
@@ -59,4 +63,4 @@
 //     // #undef ENABLE_RGB_MATRIX_TYPING_HEATMAP
 //     // #undef ENABLE_RGB_MATRIX_RAINDROPS
 //     // #undef ENABLE_RGB_MATRIX_SOLID_SPLASH
-// #endif
+#endif

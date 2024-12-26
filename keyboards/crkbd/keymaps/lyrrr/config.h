@@ -27,22 +27,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define HOLD_ON_OTHER_KEY_PRESS
 
 #ifdef RGBLIGHT_ENABLE
-    #undef RGBLED_NUM
-    #define RGBLED_NUM 54
-    #undef RGBLIGHT_LED_COUNT
-    #define RGBLIGHT_LED_COUNT RGBLED_NUM
     #define RGBLIGHT_SLEEP
-    #define RGBLIGHT_SPLIT
-    #define RGBLED_SPLIT { 27, 27 }      // Split configuration: 7 LEDs per side
     #define RGBLIGHT_EFFECT_BREATHING
     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
     #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-    #define RGBLIGHT_EFFECT_SNAKE
-    #define RGBLIGHT_EFFECT_KNIGHT
-    #define RGBLIGHT_EFFECT_CHRISTMAS
     #define RGBLIGHT_EFFECT_STATIC_GRADIENT
-    #define RGBLIGHT_EFFECT_RGB_TEST
-    #define RGBLIGHT_EFFECT_ALTERNATING
     #define RGBLIGHT_EFFECT_TWINKLE
     #define RGBLIGHT_LIMIT_VAL 120
     #define RGBLIGHT_HUE_STEP 10

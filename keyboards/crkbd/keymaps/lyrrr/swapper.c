@@ -2,8 +2,7 @@
 
 void update_swapper(
     bool *active,
-    uint16_t cmdish,
-    uint16_t tabish,
+    os_keycom_t keycom,
     uint16_t trigger,
     uint16_t keycode,
     keyrecord_t *record
@@ -12,15 +11,23 @@ void update_swapper(
         if (record->event.pressed) {
             if (!*active) {
                 *active = true;
-                register_code(cmdish);
+                for (int i = 0; i < 2; i++) {
+                    if (keycom.keys[i] != KC_NO) {
+                        register_code(keycom.keys[i]);
+                    }
+                }
             }
-            register_code(tabish);
+            register_code(keycom.keys[2]);
         } else {
-            unregister_code(tabish);
+            unregister_code(keycom.keys[2]);
             // Don't unregister cmdish until some other key is hit or released.
         }
     } else if (*active) {
-        unregister_code(cmdish);
+        for (int i = 0; i < 2; i++) {
+            if (keycom.keys[i] != KC_NO) {
+                unregister_code(keycom.keys[i]);
+            }
+        }
         *active = false;
     }
 }

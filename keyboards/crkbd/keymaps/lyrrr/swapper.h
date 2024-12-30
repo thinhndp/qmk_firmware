@@ -2,6 +2,8 @@
 
 #include QMK_KEYBOARD_H
 
+#include "types.h"
+
 // Implements cmd-tab like behaviour on a single key. On first tap of trigger
 // cmdish is held and tabish is tapped -- cmdish then remains held until some
 // other key is hit or released. For example:
@@ -12,8 +14,7 @@
 // This behaviour is useful for more than just cmd-tab, hence: cmdish, tabish.
 void update_swapper(
     bool *active,
-    uint16_t cmdish,
-    uint16_t tabish,
+    os_keycom_t keycom,
     uint16_t trigger,
     uint16_t keycode,
     keyrecord_t *record

@@ -2,6 +2,7 @@
 
 #include "oneshot.h"
 #include "swapper.h"
+#include "types.h"
 
 #define HOME G(KC_LEFT)
 #define END G(KC_RGHT)
@@ -37,7 +38,8 @@ enum keycodes {
 
     OS_MOD,
     OS_COPY,
-    OS_PASTE
+    OS_PASTE,
+    OS_APP,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -61,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [NAV] = LAYOUT_split_3x6_3(
-        QK_BOOT, SW_LANG, SW_WIN,  TABL,    TABR,    KC_VOLU, KC_CAPS, KC_DEL,  HOME,    END,     KC_PSCR,  _______,
+        QK_BOOT, SW_LANG, SW_WIN,  OS_APP,  TABR,    KC_VOLU, KC_CAPS, KC_DEL,  HOME,    END,     KC_PSCR,  _______,
         RGB_TOG, OS_CMD,  OS_ALT,  OS_SHFT, OS_CTRL, KC_VOLD, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_BSPC, _______,
         RGB_MOD, SPCL,    SPC_R,   OS_COPY, OS_PASTE,KC_MPLY, KC_ENT,  KC_BSPC, KC_TAB,  KC_PGDN, KC_PGUP, _______,
                                    MO(MOD), _______, _______, _______, _______, _______
@@ -129,17 +131,7 @@ oneshot_state os_ctrl_state = os_up_unqueued;
 oneshot_state os_alt_state = os_up_unqueued;
 oneshot_state os_cmd_state = os_up_unqueued;
 
-typedef enum {
-    OS_LINUX,
-    OS_WINDOWS,
-    OS_MAC
-} os_mode_t;
-
 os_mode_t current_os_mode = OS_LINUX;
-
-typedef struct {
-    uint16_t keys[3];
-} os_keycom_t;
 
 os_keycom_t get_os_keycom(uint16_t keycode) {
     switch (keycode) {
@@ -159,6 +151,30 @@ os_keycom_t get_os_keycom(uint16_t keycode) {
             } else if (current_os_mode == OS_MAC) {
                 return (os_keycom_t){{ KC_LGUI, KC_V, KC_NO }};
             }
+        case OS_APP:
+            if (current_os_mode == OS_LINUX) {
+                return (os_keycom_t){{ KC_LGUI, KC_A, KC_NO }};
+            } else if (current_os_mode == OS_WINDOWS) {
+                return (os_keycom_t){{ KC_LCTL, KC_V, KC_NO }};
+            } else if (current_os_mode == OS_MAC) {
+                return (os_keycom_t){{ KC_LALT, KC_SPC, KC_NO }};
+            }
+        case SW_LANG:
+            if (current_os_mode == OS_LINUX) {
+                return (os_keycom_t){{ KC_LGUI, KC_NO, KC_SPC }};
+            } else if (current_os_mode == OS_WINDOWS) {
+                return (os_keycom_t){{ KC_LCTL, KC_NO, KC_LSFT }};
+            } else if (current_os_mode == OS_MAC) {
+                return (os_keycom_t){{ KC_LCTL, KC_LALT, KC_SPC }};
+            }
+        case SW_WIN:
+            if (current_os_mode == OS_LINUX) {
+                return (os_keycom_t){{ KC_LALT, KC_NO, KC_TAB }};
+            } else if (current_os_mode == OS_WINDOWS) {
+                return (os_keycom_t){{ KC_LALT, KC_NO, KC_TAB }};
+            } else if (current_os_mode == OS_MAC) {
+                return (os_keycom_t){{ KC_LALT, KC_NO, KC_TAB }};
+            }
         default:
             return (os_keycom_t){{ KC_NO, KC_NO, KC_NO }};
     }
@@ -167,12 +183,18 @@ os_keycom_t get_os_keycom(uint16_t keycode) {
 
 void handle_swappers(uint16_t keycode, keyrecord_t *record) {
     update_swapper(
-        &sw_win_active, KC_LGUI, KC_TAB, SW_WIN,
-        keycode, record
+        &sw_win_active,
+        get_os_keycom(SW_WIN),
+        SW_WIN,
+        keycode,
+        record
     );
     update_swapper(
-        &sw_lang_active, KC_LCTL, KC_SPC, SW_LANG,
-        keycode, record
+        &sw_lang_active,
+        get_os_keycom(SW_LANG),
+        SW_LANG,
+        keycode,
+        record
     );
 }
 
@@ -207,6 +229,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case OS_COPY:
         case OS_PASTE:
+        case OS_APP:
             if (record->event.pressed) {
                 os_keycom_t keycom = get_os_keycom(keycode);
 
@@ -246,7 +269,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 static void oled_render_layer_state(void) {
-    oled_write_ln_P(PSTR("LAYER"), false);
+    oled_write_P(PSTR("LAYER"), false);
     switch (get_highest_layer(layer_state)) {
         case 0:
             oled_write_ln_P(PSTR("Def"), false);

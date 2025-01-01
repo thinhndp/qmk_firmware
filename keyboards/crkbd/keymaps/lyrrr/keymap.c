@@ -40,6 +40,7 @@ enum keycodes {
     OS_COPY,
     OS_PASTE,
     OS_APP,
+    OS_EMO,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -51,19 +52,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [SYM] = LAYOUT_split_3x6_3(
-        // _______, KC_ESC,  KC_LBRC, KC_LCBR, KC_LPRN, KC_TILD, KC_CIRC, KC_RPRN, KC_RCBR, KC_RBRC, KC_GRV,  _______,
-        // _______, KC_MINS, KC_ASTR, KC_EQL,  KC_UNDS, KC_DLR,  KC_HASH, OS_CMD,  OS_ALT,  OS_CTRL, OS_SHFT, _______,
-        // _______, KC_PLUS, KC_PIPE, KC_AT,   KC_BSLS, KC_PERC, XXXXXXX, KC_AMPR, KC_SCLN, KC_COLN, KC_EXLM, _______,
-        //                            _______, _______, _______, _______, _______, _______
-        //
-        _______, KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_CIRC, KC_AMPR, KC_EQL, KC_TILD, KC_GRV, KC_F12,
-        KC_TRNS, KC_PLUS, KC_MINS, KC_LBRC, KC_LPRN, KC_LCBR, KC_BSLS, OS_CTRL, OS_SHFT, OS_ALT, OS_CMD, KC_TRNS,
-        KC_TRNS, KC_ASTR, KC_UNDS, KC_RBRC, KC_RPRN, KC_RCBR, KC_SLSH, KC_PIPE, KC_LT, KC_GT, KC_QUES, KC_TRNS,
+        _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_EQL,  KC_TILD, KC_GRV,  KC_TRNS,
+        KC_TRNS, KC_PLUS, KC_MINS, KC_LBRC, KC_LPRN, KC_LCBR, KC_BSLS, OS_CTRL, OS_SHFT, OS_ALT,  OS_CMD,  KC_TRNS,
+        KC_TRNS, KC_ASTR, KC_UNDS, KC_RBRC, KC_RPRN, KC_RCBR, KC_SLSH, KC_PIPE, KC_LT,   KC_GT,   KC_QUES, KC_TRNS,
                                    _______, _______, _______, _______, _______, _______
     ),
 
     [NAV] = LAYOUT_split_3x6_3(
-        QK_BOOT, SW_LANG, SW_WIN,  OS_APP,  TABR,    KC_VOLU, KC_CAPS, KC_DEL,  HOME,    END,     KC_PSCR,  _______,
+        QK_BOOT, SW_LANG, SW_WIN,  OS_APP,  OS_EMO,  KC_VOLU, KC_CAPS, KC_DEL,  HOME,    END,     KC_PSCR, _______,
         RGB_TOG, OS_CMD,  OS_ALT,  OS_SHFT, OS_CTRL, KC_VOLD, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_BSPC, _______,
         RGB_MOD, SPCL,    SPC_R,   OS_COPY, OS_PASTE,KC_MPLY, KC_ENT,  KC_BSPC, KC_TAB,  KC_PGDN, KC_PGUP, _______,
                                    MO(MOD), _______, _______, _______, _______, _______
@@ -96,6 +92,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     //                                _______, _______, _______, _______, _______, _______
     // ),
+};
+
+enum combos {
+  WE_Q,
+  IO_P
+};
+
+const uint16_t PROGMEM we_combo[] = {KC_W, KC_E, COMBO_END};
+const uint16_t PROGMEM io_combo[] = {KC_I, KC_O, COMBO_END};
+
+combo_t key_combos[] = {
+  [WE_Q] = COMBO(we_combo, KC_Q),
+  [IO_P] = COMBO(io_combo, KC_P)
 };
 
 bool is_oneshot_cancel_key(uint16_t keycode) {
@@ -158,6 +167,14 @@ os_keycom_t get_os_keycom(uint16_t keycode) {
                 return (os_keycom_t){{ KC_LCTL, KC_V, KC_NO }};
             } else if (current_os_mode == OS_MAC) {
                 return (os_keycom_t){{ KC_LALT, KC_SPC, KC_NO }};
+            }
+        case OS_EMO:
+            if (current_os_mode == OS_LINUX) {
+                return (os_keycom_t){{ KC_LCTL, KC_LALT, KC_E }};
+            } else if (current_os_mode == OS_WINDOWS) {
+                return (os_keycom_t){{ KC_LGUI, KC_DOT, KC_NO }};
+            } else if (current_os_mode == OS_MAC) {
+                return (os_keycom_t){{ KC_LGUI, KC_LCTL, KC_SPC }};
             }
         case SW_LANG:
             if (current_os_mode == OS_LINUX) {
@@ -230,6 +247,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case OS_COPY:
         case OS_PASTE:
         case OS_APP:
+        case OS_EMO:
             if (record->event.pressed) {
                 os_keycom_t keycom = get_os_keycom(keycode);
 

@@ -14,6 +14,7 @@
 #define SPC_R A(G(KC_RGHT))
 #define LA_SYM MO(SYM)
 #define LA_NAV MO(NAV)
+#define LA_FUN MO(FUN)
 #define MC_ESC LCTL_T(KC_ESC)
 
 enum layers {
@@ -21,6 +22,7 @@ enum layers {
     SYM,
     NAV,
     NUM,
+    FUN,
     MOD,
     KEB,
     // OHD,
@@ -39,6 +41,7 @@ enum keycodes {
     OS_MOD,
     OS_COPY,
     OS_PASTE,
+    OS_UNDO,
     OS_APP,
     OS_EMO,
 };
@@ -53,21 +56,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [SYM] = LAYOUT_split_3x6_3(
         _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_EQL,  KC_TILD, KC_GRV,  KC_TRNS,
-        KC_TRNS, KC_PLUS, KC_MINS, KC_LBRC, KC_LPRN, KC_LCBR, KC_BSLS, OS_CTRL, OS_SHFT, OS_ALT,  OS_CMD,  KC_TRNS,
+        KC_TRNS, KC_PLUS, KC_MINS, KC_LBRC, KC_LPRN, KC_LCBR, KC_BSLS, OS_CTRL, OS_SHFT, OS_CMD,  OS_ALT,  KC_TRNS,
         KC_TRNS, KC_ASTR, KC_UNDS, KC_RBRC, KC_RPRN, KC_RCBR, KC_SLSH, KC_PIPE, KC_LT,   KC_GT,   KC_QUES, KC_TRNS,
-                                   _______, _______, _______, _______, _______, _______
+                                   _______, _______, LA_FUN,  _______, _______, _______
     ),
 
     [NAV] = LAYOUT_split_3x6_3(
         QK_BOOT, SW_LANG, SW_WIN,  OS_APP,  OS_EMO,  KC_VOLU, KC_CAPS, KC_DEL,  HOME,    END,     KC_PSCR, _______,
-        RGB_TOG, OS_CMD,  OS_ALT,  OS_SHFT, OS_CTRL, KC_VOLD, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_BSPC, _______,
-        RGB_MOD, SPCL,    SPC_R,   OS_COPY, OS_PASTE,KC_MPLY, KC_ENT,  KC_BSPC, KC_TAB,  KC_PGDN, KC_PGUP, _______,
+        RGB_TOG, OS_ALT,  OS_CMD,  OS_SHFT, OS_CTRL, KC_VOLD, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_BSPC, _______,
+        RGB_MOD, OS_UNDO, SPC_R,   OS_COPY, OS_PASTE,KC_MPLY, KC_ENT,  KC_BSPC, KC_TAB,  KC_PGDN, KC_PGUP, _______,
                                    MO(MOD), _______, _______, _______, _______, _______
     ),
 
     [NUM] = LAYOUT_split_3x6_3(
+        // _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
+        // _______, OS_ALT,  OS_CMD,  OS_SHFT, OS_CTRL, KC_F11,  KC_F12,  OS_CTRL, OS_SHFT, OS_CMD,  OS_ALT,  _______,
+        // _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
+        //                            _______, _______, _______, _______, _______, _______
         _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
-        _______, OS_CMD,  OS_ALT,  OS_SHFT, OS_CTRL, KC_F11,  KC_F12,  OS_CTRL, OS_SHFT, OS_ALT,  OS_CMD,  _______,
+        _______, OS_ALT,  OS_CMD,  OS_SHFT, OS_CTRL, KC_F11,  KC_0,    KC_4,    KC_5,    KC_6,    OS_ALT,  _______,
+        _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_1,    KC_2,    KC_3,    KC_F10,  _______,
+                                   _______, _______, _______, _______, _______, _______
+    ),
+
+    [FUN] = LAYOUT_split_3x6_3(
+        _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
+        _______, OS_ALT,  OS_CMD,  OS_SHFT, OS_CTRL, KC_F11,  KC_F12,  OS_CTRL, OS_SHFT, OS_CMD,  OS_ALT,  _______,
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
                                    _______, _______, _______, _______, _______, _______
     ),
@@ -95,16 +109,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 enum combos {
-  WE_Q,
-  IO_P
+    WE_Q,
+    IO_P,
 };
 
 const uint16_t PROGMEM we_combo[] = {KC_W, KC_E, COMBO_END};
 const uint16_t PROGMEM io_combo[] = {KC_I, KC_O, COMBO_END};
 
 combo_t key_combos[] = {
-  [WE_Q] = COMBO(we_combo, KC_Q),
-  [IO_P] = COMBO(io_combo, KC_P)
+    [WE_Q] = COMBO(we_combo, KC_Q),
+    [IO_P] = COMBO(io_combo, KC_P)
 };
 
 bool is_oneshot_cancel_key(uint16_t keycode) {
@@ -145,24 +159,26 @@ os_mode_t current_os_mode = OS_LINUX;
 os_keycom_t get_os_keycom(uint16_t keycode) {
     switch (keycode) {
         case OS_COPY:
-            if (current_os_mode == OS_LINUX) {
-                return (os_keycom_t){{ KC_LCTL, KC_C, KC_NO }};
-            } else if (current_os_mode == OS_WINDOWS) {
-                return (os_keycom_t){{ KC_LCTL, KC_C, KC_NO }};
-            } else if (current_os_mode == OS_MAC) {
+            if (current_os_mode == OS_MAC) {
                 return (os_keycom_t){{ KC_LGUI, KC_C, KC_NO }};
+            } else {
+                return (os_keycom_t){{ KC_LCTL, KC_C, KC_NO }};
             }
         case OS_PASTE:
-            if (current_os_mode == OS_LINUX) {
-                return (os_keycom_t){{ KC_LCTL, KC_V, KC_NO }};
-            } else if (current_os_mode == OS_WINDOWS) {
-                return (os_keycom_t){{ KC_LCTL, KC_V, KC_NO }};
-            } else if (current_os_mode == OS_MAC) {
+            if (current_os_mode == OS_MAC) {
                 return (os_keycom_t){{ KC_LGUI, KC_V, KC_NO }};
+            } else {
+                return (os_keycom_t){{ KC_LCTL, KC_V, KC_NO }};
+            }
+        case OS_UNDO:
+            if (current_os_mode == OS_MAC) {
+                return (os_keycom_t){{ KC_LGUI, KC_Z, KC_NO }};
+            } else {
+                return (os_keycom_t){{ KC_LCTL, KC_Z, KC_NO }};
             }
         case OS_APP:
             if (current_os_mode == OS_LINUX) {
-                return (os_keycom_t){{ KC_LGUI, KC_A, KC_NO }};
+                return (os_keycom_t){{ KC_LGUI, KC_D, KC_NO }};
             } else if (current_os_mode == OS_WINDOWS) {
                 return (os_keycom_t){{ KC_LCTL, KC_V, KC_NO }};
             } else if (current_os_mode == OS_MAC) {
@@ -246,6 +262,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case OS_COPY:
         case OS_PASTE:
+        case OS_UNDO:
         case OS_APP:
         case OS_EMO:
             if (record->event.pressed) {
@@ -289,22 +306,25 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 static void oled_render_layer_state(void) {
     oled_write_P(PSTR("LAYER"), false);
     switch (get_highest_layer(layer_state)) {
-        case 0:
+        case DEF:
             oled_write_ln_P(PSTR("Def"), false);
             break;
-        case 1:
+        case SYM:
             oled_write_ln_P(PSTR("Sym"), false);
             break;
-        case 2:
+        case NAV:
             oled_write_ln_P(PSTR("Nav"), false);
             break;
-        case 3:
+        case NUM:
             oled_write_ln_P(PSTR("Num"), false);
             break;
-        case 4:
+        case FUN:
+            oled_write_ln_P(PSTR("Fun"), false);
+            break;
+        case MOD:
             oled_write_ln_P(PSTR("Mod"), false);
             break;
-        case 5:
+        case KEB:
             oled_write_ln_P(PSTR("Keb"), false);
             break;
         // case 6:
